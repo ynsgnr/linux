@@ -1,0 +1,1 @@
+obj-y := set_myFLag.o
