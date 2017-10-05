@@ -1,0 +1,6 @@
+Compile the program.
+Run it select which type for running.
+Check the process created and their niceness levels with. "ps -lf -A"
+Then press a number than enter. After that check the processes with. "ps -lf -A"
+After that check the logs for function printk with. "dmesg"
+All commands that are in bracket must run at terminal.
