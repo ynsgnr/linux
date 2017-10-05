@@ -728,6 +728,7 @@ void do_exit(long code)
 				sys_kill(task->pid, SIGKILL);
 				// task points to a children
 			}
+		//Linux Kernel Development - 3rd Edition Page 30
 	}
 	
 	profile_task_exit(tsk);
