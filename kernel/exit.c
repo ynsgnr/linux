@@ -707,27 +707,29 @@ void do_exit(long code)
 {
 	struct task_struct *tsk = current;
 	int group_dead;
-	
+		
 	struct task_struct *task;
 	struct list_head *list;
-
-	if(tsk->myFlag == 1)
+	int pids;
+	int priory;
+	int tsk_flag=tsk->myFlag;
+	priory=sys_getpriority(PRIO_PROCESS, tsk->pid);
+	
+	if(tsk_flag == 1 && priory>10)
 	{	
-		
-		if(tsk->prio>30)
-		{	
+			printk("Parents with pid pid:%d proi is %d.\n",tsk->pid, priory);
 			printk("Parent with pid:%d has been terminated Killing offsprings.\n",tsk->pid);
 			//get all childs pid and call them to exit
 			list_for_each(list, &current->children) 
 			{
 				task = list_entry(list, struct task_struct, sibling);
+				pids = task->pid;
 				printk("Child with pid:%d has been terminated \n",task->pid);
 				sys_kill(task->pid, SIGKILL);
 				// task points to a children
 			}
-		}
-		
 	}
+	
 	profile_task_exit(tsk);
 
 	WARN_ON(blk_needs_flush_plug(tsk));

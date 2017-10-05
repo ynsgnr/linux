@@ -8,6 +8,8 @@
 int main (void){
      int x1=10, x2=1,y;
      int pid;
+     int which=PRIO_PROCESS;
+     id_t pids=getpid();
 	int secim=0;
 	printf("1-> Flag With 0 And Prio 0\n");
 	printf("2-> Flag With 1 And Prio 0\n");
@@ -23,18 +25,18 @@ int main (void){
 	break;
 	
 	case 2:
-	y=syscall(NR_mycall, x1, x2);
+	y=syscall(NR_mycall, pids, x2);
 	//set flag one but leave prio low
 	break;
 	
 	case 3:
-	setpriority(PRIO_PROCESS, 0, 40);
+	setpriority(which, pids, -15);
 	//set prio high but flag 0
 	break;
 	
 	case 4:
-	y=syscall(NR_mycall, x1, x2);
-	setpriority(PRIO_PROCESS, 0, 40);
+	y=syscall(NR_mycall, pids, x2);
+	setpriority(which, pids, -15);
 	//set both up
 	break;
 	
@@ -53,16 +55,20 @@ int main (void){
 				//empty must wait father to exit
 				//or CTRL+C to stop
 			}
-		return 123;
+			
+		exit(0);
 	}
 	
 	else
 	{	
-		
+		int waits;
 		printf("I am the father\n");
 		printf("my pid=%d\n", getpid());
-		 sleep(1); 
-		return 312;
+		printf("My Prio %d\n", getpriority(which, getpid()));
+		//sleep(1); 
+		 scanf("%d", &waits);
+		 exit(0);
+		//return 1;
 	}
 	
 	
