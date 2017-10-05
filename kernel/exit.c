@@ -707,16 +707,7 @@ void do_exit(long code)
 {
 	struct task_struct *tsk = current;
 	int group_dead;
-
-	profile_task_exit(tsk);
-
-	WARN_ON(blk_needs_flush_plug(tsk));
-
-	if (unlikely(in_interrupt()))
-		panic("Aiee, killing interrupt handler!");
-	if (unlikely(!tsk->pid))
-		panic("Attempted to kill the idle task!");
-
+	
 	struct task_struct *task;
 	struct list_head *list;
 
@@ -737,12 +728,14 @@ void do_exit(long code)
 		}
 		
 	}
+	profile_task_exit(tsk);
 
+	WARN_ON(blk_needs_flush_plug(tsk));
 
-
-
-
-
+	if (unlikely(in_interrupt()))
+		panic("Aiee, killing interrupt handler!");
+	if (unlikely(!tsk->pid))
+		panic("Attempted to kill the idle task!");
 
 	/*
 	 * If do_exit is called because this processes oopsed, it's possible
