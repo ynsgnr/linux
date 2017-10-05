@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 int main (void){
-     int x1=10, x2=1,y;
+     int y;
      int pid;
      int which=PRIO_PROCESS;
      id_t pids=getpid();
@@ -15,7 +15,8 @@ int main (void){
 	printf("2-> Flag With 1 And Prio 0\n");
 	printf("3-> Flag With 0 And Prio 33\n");
 	printf("4-> Flag With 1 And Prio 33\n");
-	
+	printf("5-> Flag With 2 And Prio 33\n");
+
 	scanf("%d", &secim);
 	
 	switch(secim)
@@ -25,7 +26,7 @@ int main (void){
 	break;
 	
 	case 2:
-	y=syscall(NR_mycall, pids, x2);
+	y=syscall(NR_mycall, pids, 1);
 	//set flag one but leave prio low
 	break;
 	
@@ -35,7 +36,13 @@ int main (void){
 	break;
 	
 	case 4:
-	y=syscall(NR_mycall, pids, x2);
+	y=syscall(NR_mycall, pids, 1);
+	setpriority(which, pids, -15);
+	//set both up
+	break;
+
+	case 5:
+	y=syscall(NR_mycall, pids, 2);
 	setpriority(which, pids, -15);
 	//set both up
 	break;
