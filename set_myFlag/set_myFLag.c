@@ -13,14 +13,21 @@ asmlinkage long set_myFlag(pid_t pid, int flag){
 
 	if (task>0)
 	{
-			printk("found task:  %d", task->pid);
+			printk("found task:  %d  \n", task->pid);
 		if(current_cred()>0){
 			  if(current_cred()->uid <= 0 || current_cred()->gid<=0){ //https://www.kernel.org/doc/Documentation/security/credentials.txt
-			      //Process has root priv. set flag
-			     task->myFlag=flag;
-			      printk("my_flag value of process %d has been set to %d \n",pid,task->myFlag);
-				//https://www.ibm.com/developerworks/library/l-kernel-logging-apis/index.html
-			      return 0;
+			      //Process has root priv. check flag
+				if(flag==1 || flag==0){
+					task->myFlag=flag;
+					printk("my_flag value of process %d has been set to %d \n",pid,task->myFlag);
+					//https://www.ibm.com/developerworks/library/l-kernel-logging-apis/index.html
+				 	return 0;
+				}
+				else{
+					printk("my_flag value of process %d can not set to %d \n",pid,flag);
+					return -EINVAL;
+				}
+
 			  }
 			  else{
 			    //Not Root throw error
