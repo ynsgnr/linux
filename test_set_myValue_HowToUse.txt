@@ -1,5 +1,5 @@
 Compile the program.
-Run it select which type for running.
+Run it select which type for running. (If not run with root user ("sudo" command) myflag value will not be set)
 Check the process created and their niceness levels with. "ps -lf -A"
 Then press a number than enter. After that check the processes with. "ps -lf -A"
 After that check the logs for function printk with. "dmesg"
